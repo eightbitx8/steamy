@@ -1,0 +1,20 @@
+name: Commit Checks
+on: 
+  push:
+    branches: [ master, main, feat-* ]
+  pull_request:
+    branches: [ master, main, feat-* ]
+jobs:
+  Pull-Request-Checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.x'
+      - run: npm ci
+      - run: npm run test-cov --if-present
+      - run: npm run lint
+      - run: npm run pretty-check --if-present
